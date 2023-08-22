@@ -1,10 +1,5 @@
 package bit.report.servletmvcboard.dao;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
 public class ArticleListParam {
 
     private String keyword;
@@ -17,5 +12,40 @@ public class ArticleListParam {
         this.page = page;
         this.pageSize = pageSize;
         this.offset = page * pageSize;
+    }
+
+    public ArticleListParam() {
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 }

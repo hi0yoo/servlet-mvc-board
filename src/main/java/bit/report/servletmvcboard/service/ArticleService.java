@@ -26,11 +26,7 @@ public class ArticleService {
 
     public Long createArticle(Long writerId, String title, String content) {
         // TODO writerId 검증
-        Article article = Article.builder()
-                .writerId(writerId)
-                .title(title)
-                .content(content)
-                .build();
+        Article article = new Article(writerId, title, content);
 
         articleDao.insertArticle(article);
 

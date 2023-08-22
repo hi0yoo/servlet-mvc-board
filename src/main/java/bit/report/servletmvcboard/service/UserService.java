@@ -22,11 +22,7 @@ public class UserService {
     public void signUp(String username, String password, String nickname) {
         // TODO 로그인 아이디 중복 체크
         // TODO 데이터 null 체크
-        User user = User.builder()
-                .username(username)
-                .password(password)
-                .nickname(nickname)
-                .build();
+        User user = new User(null, username, password, nickname);
 
         userDao.insertUser(user);
     }

@@ -1,15 +1,26 @@
 package bit.report.servletmvcboard.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
-
-@Getter
-@ToString
-@AllArgsConstructor
 public class LoginUserInfo {
 
     private Long userId;
     private String username;
     private String nickname;
+
+    public LoginUserInfo(Long userId, String username, String nickname) {
+        this.userId = userId;
+        this.username = username;
+        this.nickname = nickname;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
 }
