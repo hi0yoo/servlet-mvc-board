@@ -18,3 +18,25 @@ create table article
     foreign key (writer_id) references users (user_id)
 );
 
+
+# good 보다 article_good 이라는 이름이
+# '게시글 좋아요'라는 의미가 더 돋보이지 않을까 싶습니다
+# 테이블 구조 변경되면 알려주세요
+create table good
+(
+    user_id    bigint not null,
+    article_id bigint not null,
+    primary key (user_id, article_id),
+    foreign key (user_id) references users (user_id),
+    foreign key (article_id) references article (article_id)
+);
+
+# 역시 bac 보다 article_bad 라는 이름이 의미가 더 드러나지 싶습니다.
+create table bad
+(
+    user_id    bigint not null,
+    article_id bigint not null,
+    primary key (user_id, article_id),
+    foreign key (user_id) references users (user_id),
+    foreign key (article_id) references article (article_id)
+);

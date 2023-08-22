@@ -20,7 +20,7 @@
         </form>
         <div class="float-end">
             <button class="btn btn-secondary" onclick="function back() {
-                location.href = '/article/list'
+                location.href = '${pageContext.request.contextPath}/article/list'
             } back()">취소</button>
             <button class="btn btn-primary" onclick="function createArticle() {
                 document.articleForm.submit()

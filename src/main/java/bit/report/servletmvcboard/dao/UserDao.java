@@ -1,5 +1,6 @@
 package bit.report.servletmvcboard.dao;
 
+import bit.report.servletmvcboard.dao.model.User;
 import org.apache.ibatis.annotations.*;
 
 @Mapper

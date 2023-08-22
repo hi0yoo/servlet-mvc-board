@@ -24,7 +24,7 @@
         </form>
         <div class="float-end">
             <button class="btn btn-secondary" onclick="function back() {
-                location.href = '/login'
+                location.href = '${pageContext.request.contextPath}/login'
             } back()">취소
             </button>
             <button class="btn btn-primary" onclick="function signUp() {

@@ -22,7 +22,7 @@
         order by a.created_at desc
     </select>
 
-    <select id="selectArticleSummaryList" parameterType="bit.report.servletmvcboard.dao.ArticleListParam" resultMap="article-summary">
+    <select id="selectArticleSummaryList" parameterType="bit.report.servletmvcboard.dao.param.ArticleListParam" resultMap="article-summary">
         select a.article_id as article_id,
         a.writer_id as writer_id,
         u.nickname as writer_nickname,

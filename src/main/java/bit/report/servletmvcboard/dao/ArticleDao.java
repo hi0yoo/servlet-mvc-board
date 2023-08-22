@@ -1,5 +1,8 @@
 package bit.report.servletmvcboard.dao;
 
+import bit.report.servletmvcboard.dao.model.Article;
+import bit.report.servletmvcboard.dao.param.ArticleListParam;
+import bit.report.servletmvcboard.dao.param.UpdateArticleParam;
 import bit.report.servletmvcboard.dto.ArticleDetailsDto;
 import bit.report.servletmvcboard.dto.ArticleSummary;
 import org.apache.ibatis.annotations.*;
@@ -38,4 +41,11 @@ public interface ArticleDao {
     List<ArticleSummary> selectArticleSummaryList(ArticleListParam param);
 
     int selectArticleSummaryCount(String keyword);
+
+    @Update("update article set title = #{title}, content = #{content}, last_modified_at = now() " +
+            "where article_id = #{articleId}")
+    void updateArticle(UpdateArticleParam param);
+
+    @Delete("delete from article where article_id = #{articleId}")
+    void deleteArticle(Long articleId);
 }

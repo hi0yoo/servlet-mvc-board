@@ -1,4 +1,4 @@
-package bit.report.servletmvcboard.dao;
+package bit.report.servletmvcboard.dao.param;
 
 public class ArticleListParam {
 

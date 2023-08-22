@@ -1,5 +1,6 @@
 <%@ page import="bit.report.servletmvcboard.dto.ArticleSummary" %>
 <%@ page import="bit.report.servletmvcboard.dto.PagingDto" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,7 +15,7 @@
         <h1 class="mb-3 d-flex justify-content-center">게시글 리스트</h1>
         <div class="mb-3 float-end">
             <button class="btn btn-primary" onclick="function writePage() {
-                location.href = '/article/create'
+                location.href = '${pageContext.request.contextPath}/article/create'
             } writePage()">게시글 작성</button>
         </div>
         <div>
@@ -23,8 +24,8 @@
                 <button class="btn btn-outline-primary" type="button" onclick="function search() {
                     let keyword = document.querySelector('#input-keyword').value
 
-                    let path = '/article/list?page=0'
-                    if (keyword.length !== 0) path = '/article/list?page=0&keyword=' + keyword
+                    let path = '${pageContext.request.contextPath}/article/list?page=0'
+                    if (keyword.length !== 0) path = '${pageContext.request.contextPath}/article/list?page=0&keyword=' + keyword
 
                     location.href = path
                 } search()">검색
@@ -36,14 +37,14 @@
             for (ArticleSummary result : pagingDto.getResults()) {
         %>
         <div id="article-<%=result.getArticleId()%>" class="card" onclick="function detailPage() {
-                location.href = '/article/detail?article-id=<%=result.getArticleId()%>'
+                location.href = '${pageContext.request.contextPath}/article/detail?article-id=<%=result.getArticleId()%>'
                 } detailPage()">
             <div class="card-body">
                 <h5 class="card-title">제목 : <%=result.getTitle()%>
                 </h5>
                 <h6 class="card-subtitle mb-1 text-muted">작성자 : <%=result.getUserInfo().getNickname()%>
                 </h6>
-                <p class="card-text text-muted text-end">작성일 : <%=result.getCreatedAt()%>
+                <p class="card-text text-muted text-end">작성일 : <%=result.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))%>
                 </p>
             </div>
         </div>
@@ -53,12 +54,12 @@
         <div class="mt-3 mb-5 d-flex justify-content-center">
             <button class="btn btn-primary m-2" <%=pagingDto.isFirstPage() ? "disabled" : null%>
                     onclick="function prevPage() {
-                            location.href = '/article/list?page=<%=pagingDto.getCurrentPageNumber() - 1%>'
+                            location.href = '${pageContext.request.contextPath}/article/list?page=<%=pagingDto.getCurrentPageNumber() - 1%>'
                             } prevPage()">PREV
             </button>
             <button class="btn btn-primary m-2" <%=pagingDto.isLastPage() ? "disabled" : null%>
                     onclick="function nextPage() {
-                            location.href = '/article/list?page=<%=pagingDto.getCurrentPageNumber() + 1%>'
+                            location.href = '${pageContext.request.contextPath}/article/list?page=<%=pagingDto.getCurrentPageNumber() + 1%>'
                             } nextPage()">NEXT
             </button>
         </div>

@@ -20,7 +20,7 @@
         </form>
         <div class="float-end">
             <button class="btn btn-outline-primary" onclick="function signUpPage() {
-                location.href = '/sign-up'
+                location.href = '${pageContext.request.contextPath}/sign-up'
             } signUpPage()">회원가입
             </button>
             <button class="btn btn-primary" onclick="function login() {

@@ -1,7 +1,7 @@
 package bit.report.servletmvcboard.service;
 
 import bit.report.servletmvcboard.config.MybatisManager;
-import bit.report.servletmvcboard.dao.User;
+import bit.report.servletmvcboard.dao.model.User;
 import bit.report.servletmvcboard.dao.UserDao;
 import bit.report.servletmvcboard.dto.LoginUserInfo;
 

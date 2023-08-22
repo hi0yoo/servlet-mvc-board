@@ -1,9 +1,10 @@
 package bit.report.servletmvcboard.service;
 
 import bit.report.servletmvcboard.config.MybatisManager;
-import bit.report.servletmvcboard.dao.Article;
+import bit.report.servletmvcboard.dao.model.Article;
 import bit.report.servletmvcboard.dao.ArticleDao;
-import bit.report.servletmvcboard.dao.ArticleListParam;
+import bit.report.servletmvcboard.dao.param.ArticleListParam;
+import bit.report.servletmvcboard.dao.param.UpdateArticleParam;
 import bit.report.servletmvcboard.dto.ArticleDetailsDto;
 import bit.report.servletmvcboard.dto.ArticleSummary;
 import bit.report.servletmvcboard.dto.PagingDto;
@@ -44,9 +45,9 @@ public class ArticleService {
         return articleDetailsDto;
     }
 
-    // TODO 구현
     public void updateArticle(Long userId, Long articleId, String title, String content) {
-
+        // TODO check userId
+        articleDao.updateArticle(new UpdateArticleParam(articleId, title, content));
     }
 
     // search, paging
@@ -66,5 +67,10 @@ public class ArticleService {
 
         List<ArticleSummary> articleSummaries = articleDao.selectArticleSummaryList(new ArticleListParam(keyword, page, pageSize));
         return new PagingDto<>(articleSummaries, page, totalPageCount - 1);
+    }
+
+    public void deleteArticle(Long userId, Long articleId) {
+        // TODO check userId
+        articleDao.deleteArticle(articleId);
     }
 }
