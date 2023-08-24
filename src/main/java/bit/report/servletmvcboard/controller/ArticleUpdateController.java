@@ -1,7 +1,7 @@
 package bit.report.servletmvcboard.controller;
 
 import bit.report.servletmvcboard.dto.ArticleDetailsDto;
-import bit.report.servletmvcboard.dto.LoginUserInfo;
+import bit.report.servletmvcboard.dto.LoginUserInfoDto;
 import bit.report.servletmvcboard.service.ArticleService;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/article/update")
-public class UpdateArticleController extends AbstractController {
+public class ArticleUpdateController extends AbstractController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -20,8 +20,8 @@ public class UpdateArticleController extends AbstractController {
 
         // TODO 작성자 확인
         // TODO when ArticleDetails null
-        LoginUserInfo loginUserInfo = getLoginUserInfo(req);
-        ArticleDetailsDto articleDetails = ArticleService.getInstance().getArticleDetails(loginUserInfo.getUserId(), articleId);
+        LoginUserInfoDto loginUserInfoDto = getLoginUserInfo(req);
+        ArticleDetailsDto articleDetails = ArticleService.getInstance().getArticleDetails(loginUserInfoDto.getUserId(), articleId);
         req.setAttribute("articleDetails", articleDetails);
 
         RequestDispatcher rd = req.getRequestDispatcher(resolvePath("article/update"));
@@ -30,7 +30,7 @@ public class UpdateArticleController extends AbstractController {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LoginUserInfo loginUserInfo = getLoginUserInfo(req);
+        LoginUserInfoDto loginUserInfoDto = getLoginUserInfo(req);
 
         // TODO 작성자 확인
 
@@ -39,7 +39,7 @@ public class UpdateArticleController extends AbstractController {
         String title = req.getParameter("title");
         String content = req.getParameter("content");
 
-        ArticleService.getInstance().updateArticle(loginUserInfo.getUserId(), articleId, title, content);
+        ArticleService.getInstance().updateArticle(loginUserInfoDto.getUserId(), articleId, title, content);
 
         resp.sendRedirect("/article/detail?article-id=" + articleId);
     }

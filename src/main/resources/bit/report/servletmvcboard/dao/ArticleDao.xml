@@ -12,6 +12,10 @@
         <result column="content" property="content"/>
         <result column="created_at" property="createdAt"/>
         <result column="last_modified_at" property="lastModifiedAt"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="unlike_count" property="unlikeCount"/>
+        <result column="liked" property="liked"/>
+        <result column="unliked" property="unliked"/>
         <result column="scraped" property="scraped"/>
     </resultMap>
 
@@ -23,15 +27,21 @@
                a.content          as content,
                a.created_at       as created_at,
                a.last_modified_at as last_modified_at,
+               (select count(*) from good where article_id = #{articleId}) as like_count,
+               (select count(*) from bad where article_id = #{articleId}) as unlike_count,
+               if ((g.num) is null, false, true) as liked,
+               if ((b.num) is null, false, true) as unliked,
                if (art_sc.article_scrap_id is null, false, true) as scraped
         from article a
                  left join users u on a.writer_id = u.user_id
                  left join article_scrap as art_sc on a.article_id = art_sc.article_id and art_sc.user_id = #{userId}
+                 left join good as g on a.article_id = g.article_id and g.user_id = #{userId}
+                 left join bad as b on a.article_id = b.article_id and b.user_id = #{userId}
         where a.article_id = #{articleId};
     </select>
 
 
-    <resultMap id="article-summary" type="bit.report.servletmvcboard.dto.ArticleSummary">
+    <resultMap id="article-summary" type="bit.report.servletmvcboard.dto.ArticleSummaryDto">
         <id column="article_id" property="articleId"/>
         <result column="writer_id" property="userInfo.userId"/>
         <result column="writer_nickname" property="userInfo.nickname"/>
@@ -74,6 +84,32 @@
                  left join article a on art_sc.article_id = a.article_id
                  left join users u on a.writer_id = u.user_id
         where art_sc.user_id = #{userId}
+        order by a.created_at desc
+    </select>
+
+    <select id="selectArticleSummaryListByLikedUserId" parameterType="Long" resultMap="article-summary">
+        select a.article_id as article_id,
+               a.writer_id  as writer_id,
+               u.nickname   as writer_nickname,
+               a.title      as title,
+               a.created_at as created_at
+        from good g
+                 left join article a on g.article_id = a.article_id
+                 left join users u on a.writer_id = u.user_id
+        where g.user_id = #{userId}
+        order by a.created_at desc
+    </select>
+
+    <select id="selectArticleSummaryListByUnlikedUserId" parameterType="Long" resultMap="article-summary">
+        select a.article_id as article_id,
+               a.writer_id  as writer_id,
+               u.nickname   as writer_nickname,
+               a.title      as title,
+               a.created_at as created_at
+        from bad b
+                 left join article a on b.article_id = a.article_id
+                 left join users u on a.writer_id = u.user_id
+        where b.user_id = #{userId}
         order by a.created_at desc
     </select>
 </mapper>

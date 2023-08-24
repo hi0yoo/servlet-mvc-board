@@ -1,6 +1,6 @@
 package bit.report.servletmvcboard.controller;
 
-import bit.report.servletmvcboard.dto.LoginUserInfo;
+import bit.report.servletmvcboard.dto.LoginUserInfoDto;
 import bit.report.servletmvcboard.service.UserService;
 
 import javax.servlet.ServletException;
@@ -14,12 +14,12 @@ public class UserUpdateController extends AbstractController {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LoginUserInfo loginUserInfo = getLoginUserInfo(req);
+        LoginUserInfoDto loginUserInfoDto = getLoginUserInfo(req);
 
         String nickname = req.getParameter("nickname");
-        UserService.getInstance().update(loginUserInfo.getUserId(), nickname);
+        UserService.getInstance().update(loginUserInfoDto.getUserId(), nickname);
 
-        setLoginUserInfo(req, UserService.getInstance().getLoginUserInfo(loginUserInfo.getUserId()));
+        setLoginUserInfo(req, UserService.getInstance().getLoginUserInfoBy(loginUserInfoDto.getUserId()));
 
         resp.sendRedirect("/my-page");
     }

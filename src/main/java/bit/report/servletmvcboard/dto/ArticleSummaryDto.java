@@ -2,17 +2,17 @@ package bit.report.servletmvcboard.dto;
 
 import java.time.LocalDateTime;
 
-public class ArticleSummary {
+public class ArticleSummaryDto {
 
     private Long articleId;
     private UserInfoDto userInfo;
     private String title;
     private LocalDateTime createdAt;
 
-    public ArticleSummary() {
+    public ArticleSummaryDto() {
     }
 
-    public ArticleSummary(Long articleId, UserInfoDto userInfo, String title, LocalDateTime createdAt) {
+    public ArticleSummaryDto(Long articleId, UserInfoDto userInfo, String title, LocalDateTime createdAt) {
         this.articleId = articleId;
         this.userInfo = userInfo;
         this.title = title;

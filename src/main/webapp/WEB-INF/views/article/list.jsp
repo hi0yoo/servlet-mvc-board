@@ -1,4 +1,4 @@
-<%@ page import="bit.report.servletmvcboard.dto.ArticleSummary" %>
+<%@ page import="bit.report.servletmvcboard.dto.ArticleSummaryDto" %>
 <%@ page import="bit.report.servletmvcboard.dto.PagingDto" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -32,8 +32,8 @@
             </div>
         </div>
         <%
-            PagingDto<ArticleSummary> pagingDto = (PagingDto<ArticleSummary>) request.getAttribute("pagingDto");
-            for (ArticleSummary result : pagingDto.getResults()) {
+            PagingDto<ArticleSummaryDto> pagingDto = (PagingDto<ArticleSummaryDto>) request.getAttribute("pagingDto");
+            for (ArticleSummaryDto result : pagingDto.getResults()) {
         %>
         <div id="article-<%=result.getArticleId()%>" class="card" onclick="function detailPage() {
                 location.href = '${pageContext.request.contextPath}/article/detail?article-id=<%=result.getArticleId()%>'
@@ -50,7 +50,7 @@
         <%
             }
         %>
-        <div class="mt-3 mb-5 d-flex justify-content-center">
+        <div class="mt-3 d-flex justify-content-center">
             <button class="btn btn-primary m-2" <%=pagingDto.isFirstPage() ? "disabled" : null%>
                     onclick="function prevPage() {
                             location.href = '${pageContext.request.contextPath}/article/list?page=<%=pagingDto.getCurrentPageNumber() - 1%>'
@@ -62,6 +62,7 @@
                             } nextPage()">NEXT
             </button>
         </div>
+        <div class="float-end">현재 페이지 : <%=pagingDto.getCurrentPageNumber() + 1%> / 전체 페이지 : <%=pagingDto.getLastPageNumber() + 1%></div>
     </div>
 </div>
 </body>

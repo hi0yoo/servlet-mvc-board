@@ -1,6 +1,6 @@
 package bit.report.servletmvcboard.controller;
 
-import bit.report.servletmvcboard.dto.LoginUserInfo;
+import bit.report.servletmvcboard.dto.LoginUserInfoDto;
 import bit.report.servletmvcboard.service.ArticleService;
 
 import javax.servlet.ServletException;
@@ -18,8 +18,8 @@ public class ArticleScrapController extends AbstractController {
         String articleIdString = req.getParameter("articleId");
         Long articleId = Long.parseLong(articleIdString);
 
-        LoginUserInfo loginUserInfo = getLoginUserInfo(req);
-        ArticleService.getInstance().toggleScrap(loginUserInfo.getUserId(), articleId);
+        LoginUserInfoDto loginUserInfoDto = getLoginUserInfo(req);
+        ArticleService.getInstance().toggleScrap(loginUserInfoDto.getUserId(), articleId);
 
         resp.sendRedirect("/article/detail?article-id=" + articleId);
     }

@@ -5,7 +5,7 @@ import bit.report.servletmvcboard.dao.param.ArticleListParam;
 import bit.report.servletmvcboard.dao.param.UpdateArticleParam;
 import bit.report.servletmvcboard.dao.param.UserAndArticleIdParam;
 import bit.report.servletmvcboard.dto.ArticleDetailsDto;
-import bit.report.servletmvcboard.dto.ArticleSummary;
+import bit.report.servletmvcboard.dto.ArticleSummaryDto;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public interface ArticleDao {
 
     ArticleDetailsDto selectArticleDetails(UserAndArticleIdParam param);
 
-    List<ArticleSummary> selectArticleSummaryList(ArticleListParam param);
+    List<ArticleSummaryDto> selectArticleSummaryList(ArticleListParam param);
 
     int selectArticleSummaryCount(String keyword);
 
@@ -31,5 +31,9 @@ public interface ArticleDao {
     @Delete("delete from article where article_id = #{articleId}")
     void deleteArticle(Long articleId);
 
-    List<ArticleSummary> selectArticleSummaryListByScrapUserId(Long userId);
+    List<ArticleSummaryDto> selectArticleSummaryListByScrapUserId(Long userId);
+
+    List<ArticleSummaryDto> selectArticleSummaryListByLikedUserId(Long userId);
+
+    List<ArticleSummaryDto> selectArticleSummaryListByUnlikedUserId(Long userId);
 }

@@ -1,12 +1,12 @@
 package bit.report.servletmvcboard.dto;
 
-public class LoginUserInfo {
+public class LoginUserInfoDto {
 
     private Long userId;
     private String username;
     private String nickname;
 
-    public LoginUserInfo(Long userId, String username, String nickname) {
+    public LoginUserInfoDto(Long userId, String username, String nickname) {
         this.userId = userId;
         this.username = username;
         this.nickname = nickname;

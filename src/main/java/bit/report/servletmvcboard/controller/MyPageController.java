@@ -1,7 +1,7 @@
 package bit.report.servletmvcboard.controller;
 
-import bit.report.servletmvcboard.dto.ArticleSummary;
-import bit.report.servletmvcboard.dto.LoginUserInfo;
+import bit.report.servletmvcboard.dto.ArticleSummaryDto;
+import bit.report.servletmvcboard.dto.LoginUserInfoDto;
 import bit.report.servletmvcboard.service.ArticleService;
 
 import javax.servlet.RequestDispatcher;
@@ -18,13 +18,19 @@ public class MyPageController extends AbstractController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LoginUserInfo loginUserInfo = getLoginUserInfo(req);
+        LoginUserInfoDto loginUserInfoDto = getLoginUserInfo(req);
+
+        // 좋아요 리스트 조회
+        List<ArticleSummaryDto> likedArticleList = ArticleService.getInstance().getLikedArticleList(loginUserInfoDto.getUserId());
+        req.setAttribute("likedArticleList", likedArticleList);
+
+        // 싫어요 리스트 조회
+        List<ArticleSummaryDto> unlikedArticleList = ArticleService.getInstance().getUnlikedArticleList(loginUserInfoDto.getUserId());
+        req.setAttribute("unlikedArticleList", unlikedArticleList);
 
         // 스크랩 리스트 조회
-        List<ArticleSummary> scrapedArticleList = ArticleService.getInstance().getScrapedArticleList(loginUserInfo.getUserId());
+        List<ArticleSummaryDto> scrapedArticleList = ArticleService.getInstance().getScrapedArticleList(loginUserInfoDto.getUserId());
         req.setAttribute("scrapedArticleList", scrapedArticleList);
-
-        // TODO 좋아요, 싫어요 리스트 조회
 
         RequestDispatcher rd = req.getRequestDispatcher(resolvePath("user/my-page"));
         rd.forward(req, resp);

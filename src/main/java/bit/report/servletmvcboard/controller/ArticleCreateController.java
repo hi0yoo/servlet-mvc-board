@@ -1,6 +1,6 @@
 package bit.report.servletmvcboard.controller;
 
-import bit.report.servletmvcboard.dto.LoginUserInfo;
+import bit.report.servletmvcboard.dto.LoginUserInfoDto;
 import bit.report.servletmvcboard.service.ArticleService;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/article/create")
-public class CreateArticleController extends AbstractController {
+public class ArticleCreateController extends AbstractController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -21,11 +21,11 @@ public class CreateArticleController extends AbstractController {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LoginUserInfo loginUserInfo = getLoginUserInfo(req);
+        LoginUserInfoDto loginUserInfoDto = getLoginUserInfo(req);
         String title = req.getParameter("title");
         String content = req.getParameter("content");
 
-        Long articleId = ArticleService.getInstance().createArticle(loginUserInfo.getUserId(), title, content);
+        Long articleId = ArticleService.getInstance().createArticle(loginUserInfoDto.getUserId(), title, content);
 
         resp.sendRedirect("/article/detail?article-id=" + articleId);
     }

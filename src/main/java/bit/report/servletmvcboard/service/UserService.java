@@ -4,7 +4,7 @@ import bit.report.servletmvcboard.config.MybatisManager;
 import bit.report.servletmvcboard.dao.model.User;
 import bit.report.servletmvcboard.dao.UserDao;
 import bit.report.servletmvcboard.dao.param.UserUpdateParam;
-import bit.report.servletmvcboard.dto.LoginUserInfo;
+import bit.report.servletmvcboard.dto.LoginUserInfoDto;
 
 public class UserService {
 
@@ -28,7 +28,7 @@ public class UserService {
         userDao.insertUser(user);
     }
 
-    public LoginUserInfo login(String username, String password) {
+    public LoginUserInfoDto getLoginUserInfoBy(String username, String password) {
         User user = userDao.selectUserByUsername(username);
         if (user == null) {
             throw new RuntimeException("로그인 아이디 오류");
@@ -38,13 +38,13 @@ public class UserService {
             throw new RuntimeException("비밀번호 오류");
         }
 
-        return new LoginUserInfo(user.getId(), user.getUsername(), user.getNickname());
+        return new LoginUserInfoDto(user.getId(), user.getUsername(), user.getNickname());
     }
 
-    public LoginUserInfo getLoginUserInfo(Long userId) {
+    public LoginUserInfoDto getLoginUserInfoBy(Long userId) {
         User user = userDao.selectUserByUserId(userId);
 
-        return new LoginUserInfo(user.getId(), user.getUsername(), user.getNickname());
+        return new LoginUserInfoDto(user.getId(), user.getUsername(), user.getNickname());
     }
 
     public void update(Long userId, String nickname) {

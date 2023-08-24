@@ -1,7 +1,7 @@
 package bit.report.servletmvcboard.controller;
 
 import bit.report.servletmvcboard.dto.ArticleDetailsDto;
-import bit.report.servletmvcboard.dto.LoginUserInfo;
+import bit.report.servletmvcboard.dto.LoginUserInfoDto;
 import bit.report.servletmvcboard.service.ArticleService;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,8 +17,8 @@ public class ArticleDetailController extends AbstractController {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long articleId = Long.valueOf(req.getParameter("article-id"));
-        LoginUserInfo loginUserInfo = getLoginUserInfo(req);
-        Long userId = loginUserInfo == null ? null : loginUserInfo.getUserId();
+        LoginUserInfoDto loginUserInfoDto = getLoginUserInfo(req);
+        Long userId = loginUserInfoDto == null ? null : loginUserInfoDto.getUserId();
 
         ArticleDetailsDto articleDetails = ArticleService.getInstance().getArticleDetails(userId, articleId);
         req.setAttribute("articleDetails", articleDetails);

@@ -1,6 +1,6 @@
 package bit.report.servletmvcboard.controller;
 
-import bit.report.servletmvcboard.dto.ArticleSummary;
+import bit.report.servletmvcboard.dto.ArticleSummaryDto;
 import bit.report.servletmvcboard.dto.PagingDto;
 import bit.report.servletmvcboard.service.ArticleService;
 import javax.servlet.RequestDispatcher;
@@ -21,7 +21,7 @@ public class ArticleListController extends AbstractController {
         int page = 0;
         if (!(pageString == null) && !pageString.isEmpty()) page = Integer.parseInt(pageString);
 
-        PagingDto<ArticleSummary> pagingDto = ArticleService.getInstance().search(keyword, page);
+        PagingDto<ArticleSummaryDto> pagingDto = ArticleService.getInstance().search(keyword, page);
         req.setAttribute("pagingDto", pagingDto);
 
         RequestDispatcher rd = req.getRequestDispatcher(resolvePath("article/list"));

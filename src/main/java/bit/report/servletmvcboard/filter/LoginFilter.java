@@ -1,6 +1,6 @@
 package bit.report.servletmvcboard.filter;
 
-import bit.report.servletmvcboard.dto.LoginUserInfo;
+import bit.report.servletmvcboard.dto.LoginUserInfoDto;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -18,9 +18,9 @@ public class LoginFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        LoginUserInfo loginUserInfo = (LoginUserInfo) httpServletRequest.getSession().getAttribute("loginUser");
+        LoginUserInfoDto loginUserInfoDto = (LoginUserInfoDto) httpServletRequest.getSession().getAttribute("loginUser");
 
-        if (loginUserInfo == null) {
+        if (loginUserInfoDto == null) {
             RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/WEB-INF/error/401.jsp");
             ((HttpServletResponse) response).setStatus(401);
             rd.forward(request, response);

@@ -1,6 +1,6 @@
 package bit.report.servletmvcboard.controller;
 
-import bit.report.servletmvcboard.dto.LoginUserInfo;
+import bit.report.servletmvcboard.dto.LoginUserInfoDto;
 import bit.report.servletmvcboard.service.UserService;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,9 +24,9 @@ public class LoginController extends AbstractController {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        LoginUserInfo loginUserInfo = UserService.getInstance().login(username, password);
+        LoginUserInfoDto loginUserInfoDto = UserService.getInstance().getLoginUserInfoBy(username, password);
 
-        setLoginUserInfo(req, loginUserInfo);
+        setLoginUserInfo(req, loginUserInfoDto);
 
         resp.sendRedirect("/article/list");
     }

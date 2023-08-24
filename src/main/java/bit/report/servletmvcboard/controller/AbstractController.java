@@ -1,6 +1,6 @@
 package bit.report.servletmvcboard.controller;
 
-import bit.report.servletmvcboard.dto.LoginUserInfo;
+import bit.report.servletmvcboard.dto.LoginUserInfoDto;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,11 +15,11 @@ public abstract class AbstractController extends HttpServlet {
         return VIEW_PREFIX + path + VIEW_SUFFIX;
     }
 
-    protected static void setLoginUserInfo(HttpServletRequest request, LoginUserInfo loginUserInfo) {
-        request.getSession().setAttribute(SESSION_ATTR_NAME_LOGIN_USER, loginUserInfo);
+    protected static void setLoginUserInfo(HttpServletRequest request, LoginUserInfoDto loginUserInfoDto) {
+        request.getSession().setAttribute(SESSION_ATTR_NAME_LOGIN_USER, loginUserInfoDto);
     }
 
-    protected static LoginUserInfo getLoginUserInfo(HttpServletRequest request) {
-        return (LoginUserInfo) request.getSession().getAttribute(SESSION_ATTR_NAME_LOGIN_USER);
+    protected static LoginUserInfoDto getLoginUserInfo(HttpServletRequest request) {
+        return (LoginUserInfoDto) request.getSession().getAttribute(SESSION_ATTR_NAME_LOGIN_USER);
     }
 }

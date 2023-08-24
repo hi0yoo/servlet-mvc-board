@@ -1,5 +1,5 @@
 <%@ page import="bit.report.servletmvcboard.dto.ArticleDetailsDto" %>
-<%@ page import="bit.report.servletmvcboard.dto.LoginUserInfo" %>
+<%@ page import="bit.report.servletmvcboard.dto.LoginUserInfoDto" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -22,7 +22,7 @@
                         } listPage()">목록으로</button>
             </span>
         <%
-            LoginUserInfo userInfo = (LoginUserInfo) session.getAttribute("loginUser");
+            LoginUserInfoDto userInfo = (LoginUserInfoDto) session.getAttribute("loginUser");
             if (userInfo != null && articleDetails.getUserInfo().getUserId().equals(userInfo.getUserId())) {
         %>
         <span class="float-end">
@@ -78,10 +78,10 @@
     </div>
     <div class="mb-3 d-flex justify-content-center">
             <span>
-                <button class="btn btn-outline-primary m-2" onclick="function like() {
+                <button class="btn btn-<%=articleDetails.isLiked()?"primary":"secondary"%> m-2" onclick="function like() {
                         <!-- articleLikeForm 전송 -->
                         document.articleLikeForm.submit();
-                    } like()">좋아요 <span class="badge bg-danger">4</span></button><!-- 여기 span 내부에 count 변수 삽입 -->
+                    } like()">좋아요 <span class="badge bg-danger"><%=articleDetails.getLikeCount()%></span></button><!-- 여기 span 내부에 count 변수 삽입 -->
                 <%-- hidden form이라 안보인다. --%>
                 <form name="articleLikeForm" hidden="hidden" method="post"
                       action="${pageContext.request.contextPath}/article/like">
@@ -90,10 +90,10 @@
             </span>
 
         <span>
-                <button class="btn btn-outline-primary m-2" onclick="function unlike() {
+                <button class="btn btn-<%=articleDetails.isUnliked()?"primary":"secondary"%> m-2" onclick="function unlike() {
                 <%-- articleUnlikeForm 전송 --%>
                         document.articleUnlikeForm.submit();
-                        } unlike()">싫어요 <span class="badge bg-danger">4</span></button><!-- 여기 span 내부에 count 변수 삽입 -->
+                        } unlike()">싫어요 <span class="badge bg-danger"><%=articleDetails.getUnlikeCount()%></span></button><!-- 여기 span 내부에 count 변수 삽입 -->
                 <%-- hidden form이라 안보인다. --%>
                 <form name="articleUnlikeForm" hidden="hidden" method="post"
                       action="${pageContext.request.contextPath}/article/unlike">
@@ -105,13 +105,13 @@
                 <%
                     if (!articleDetails.isScraped()) {
                 %>
-                <button class="btn btn-outline-primary m-2" onclick="function scrap() {
+                <button class="btn btn-secondary m-2" onclick="function scrap() {
                     document.articleScrapForm.submit()
                     } scrap()">스크랩</button>
                 <%
                 } else {
                 %>
-                <button class="btn btn-outline-primary m-2" onclick="function scrap() {
+                <button class="btn btn-primary m-2" onclick="function scrap() {
                     document.articleScrapForm.submit()
                     } scrap()">스크랩 취소</button>
                 <%

@@ -1,15 +1,19 @@
 package bit.report.servletmvcboard.service;
 
 import bit.report.servletmvcboard.config.MybatisManager;
+import bit.report.servletmvcboard.dao.ArticleGoodDao;
 import bit.report.servletmvcboard.dao.ArticleScrapDao;
+import bit.report.servletmvcboard.dao.ArticleBadDao;
 import bit.report.servletmvcboard.dao.model.Article;
 import bit.report.servletmvcboard.dao.ArticleDao;
+import bit.report.servletmvcboard.dao.model.ArticleBad;
+import bit.report.servletmvcboard.dao.model.ArticleGood;
 import bit.report.servletmvcboard.dao.model.ArticleScrap;
 import bit.report.servletmvcboard.dao.param.ArticleListParam;
 import bit.report.servletmvcboard.dao.param.UpdateArticleParam;
 import bit.report.servletmvcboard.dao.param.UserAndArticleIdParam;
 import bit.report.servletmvcboard.dto.ArticleDetailsDto;
-import bit.report.servletmvcboard.dto.ArticleSummary;
+import bit.report.servletmvcboard.dto.ArticleSummaryDto;
 import bit.report.servletmvcboard.dto.PagingDto;
 
 import java.util.List;
@@ -20,10 +24,14 @@ public class ArticleService {
 
     private final ArticleDao articleDao;
     private final ArticleScrapDao articleScrapDao;
+    private final ArticleGoodDao articleGoodDao;
+    private final ArticleBadDao articleBadDao;
 
     private ArticleService() {
         this.articleDao = MybatisManager.getMapper(ArticleDao.class);
         this.articleScrapDao = MybatisManager.getMapper(ArticleScrapDao.class);
+        this.articleGoodDao = MybatisManager.getMapper(ArticleGoodDao.class);
+        this.articleBadDao = MybatisManager.getMapper(ArticleBadDao.class);
     }
 
     public static ArticleService getInstance() {
@@ -56,7 +64,7 @@ public class ArticleService {
     }
 
     // search, paging
-    public PagingDto<ArticleSummary> search(String keyword, int page) {
+    public PagingDto<ArticleSummaryDto> search(String keyword, int page) {
         int totalCount = articleDao.selectArticleSummaryCount(keyword);
 
         int pageSize = 5;
@@ -70,13 +78,59 @@ public class ArticleService {
                                        ", request-page-number : " + page);
         }
 
-        List<ArticleSummary> articleSummaries = articleDao.selectArticleSummaryList(new ArticleListParam(keyword, page, pageSize));
+        List<ArticleSummaryDto> articleSummaries = articleDao.selectArticleSummaryList(new ArticleListParam(keyword, page, pageSize));
         return new PagingDto<>(articleSummaries, page, totalPageCount - 1);
     }
 
     public void deleteArticle(Long userId, Long articleId) {
         // TODO check userId
         articleDao.deleteArticle(articleId);
+    }
+
+    public void toggleLike(Long userId, Long articleId) {
+        // 좋아요 조회
+        UserAndArticleIdParam daoParam = new UserAndArticleIdParam(userId, articleId);
+        ArticleGood articleGood = articleGoodDao.selectArticleGood(daoParam);
+
+        // 좋아요 있으면 좋아요 삭제. 종료
+        if (articleGood != null) {
+            articleGoodDao.deleteArticleGood(articleGood.getNum());
+            return;
+        }
+
+        // 좋아요 없으면 싫어요 조회
+        ArticleBad articleBad = articleBadDao.selectArticleBad(daoParam);
+        // 싫어요 없으면 좋아요 insert. 종료.
+        if (articleBad == null) {
+            articleGoodDao.insertArticleGood(new ArticleGood(null, userId, articleId));
+            return;
+        }
+        // 싫어요 있으면 싫어요 delete, 좋아요 insert. 종료
+        articleBadDao.deleteArticleBad(articleBad.getNum());
+        articleGoodDao.insertArticleGood(new ArticleGood(null, userId, articleId));
+    }
+
+    public void toggleUnlike(Long userId, Long articleId) {
+        // 싫어요 조회
+        UserAndArticleIdParam daoParam = new UserAndArticleIdParam(userId, articleId);
+        ArticleBad articleBad = articleBadDao.selectArticleBad(daoParam);
+
+        // 싫어요 있으면 싫어요 삭제. 종료
+        if (articleBad != null) {
+            articleBadDao.deleteArticleBad(articleBad.getNum());
+            return;
+        }
+
+        // 싫어요 없으면 좋아요 조회
+        ArticleGood articleGood = articleGoodDao.selectArticleGood(daoParam);
+        // 좋아요 없으면 싫어요 insert. 종료.
+        if (articleGood == null) {
+            articleBadDao.insertArticleBad(new ArticleBad(null, userId, articleId));
+            return;
+        }
+        // 좋아요 있으면 좋아요 delete, 싫어요 insert. 종료
+        articleGoodDao.deleteArticleGood(articleGood.getNum());
+        articleBadDao.insertArticleBad(new ArticleBad(null, userId, articleId));
     }
 
     public void toggleScrap(Long userId, Long articleId) {
@@ -88,7 +142,15 @@ public class ArticleService {
         else articleScrapDao.insertArticleScrap(new ArticleScrap(null, userId, articleId));
     }
 
-    public List<ArticleSummary> getScrapedArticleList(Long userId) {
+    public List<ArticleSummaryDto> getScrapedArticleList(Long userId) {
         return articleDao.selectArticleSummaryListByScrapUserId(userId);
+    }
+
+    public List<ArticleSummaryDto> getLikedArticleList(Long userId) {
+        return articleDao.selectArticleSummaryListByLikedUserId(userId);
+    }
+
+    public List<ArticleSummaryDto> getUnlikedArticleList(Long userId) {
+        return articleDao.selectArticleSummaryListByUnlikedUserId(userId);
     }
 }
