@@ -3,6 +3,7 @@ package bit.report.servletmvcboard.service;
 import bit.report.servletmvcboard.config.MybatisManager;
 import bit.report.servletmvcboard.dao.model.User;
 import bit.report.servletmvcboard.dao.UserDao;
+import bit.report.servletmvcboard.dao.param.UserUpdateParam;
 import bit.report.servletmvcboard.dto.LoginUserInfo;
 
 public class UserService {
@@ -38,5 +39,15 @@ public class UserService {
         }
 
         return new LoginUserInfo(user.getId(), user.getUsername(), user.getNickname());
+    }
+
+    public LoginUserInfo getLoginUserInfo(Long userId) {
+        User user = userDao.selectUserByUserId(userId);
+
+        return new LoginUserInfo(user.getId(), user.getUsername(), user.getNickname());
+    }
+
+    public void update(Long userId, String nickname) {
+        userDao.updateUser(new UserUpdateParam(userId, nickname));
     }
 }

@@ -3,7 +3,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Servlet MVC Board</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/article/list">Servlet MVC Board</a>
         <%
             LoginUserInfo loginUser = (LoginUserInfo) session.getAttribute("loginUser");
             if (loginUser != null) {

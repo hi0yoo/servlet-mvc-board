@@ -3,6 +3,7 @@ package bit.report.servletmvcboard.dao;
 import bit.report.servletmvcboard.dao.model.Article;
 import bit.report.servletmvcboard.dao.param.ArticleListParam;
 import bit.report.servletmvcboard.dao.param.UpdateArticleParam;
+import bit.report.servletmvcboard.dao.param.UserAndArticleIdParam;
 import bit.report.servletmvcboard.dto.ArticleDetailsDto;
 import bit.report.servletmvcboard.dto.ArticleSummary;
 import org.apache.ibatis.annotations.*;
@@ -17,26 +18,7 @@ public interface ArticleDao {
             "values (#{writerId}, #{title}, #{content}, #{createdAt}, #{lastModifiedAt})")
     void insertArticle(Article article);
 
-    @Results(id = "articleDetails", value = {
-            @Result(property = "articleId", column = "article_id", id = true),
-            @Result(property = "userInfo.userId", column = "writer_id"),
-            @Result(property = "userInfo.nickname", column = "writer_nickname"),
-            @Result(property = "title", column = "title"),
-            @Result(property = "content", column = "content"),
-            @Result(property = "createdAt", column = "created_at"),
-            @Result(property = "lastModifiedAt", column = "last_modified_at")
-    })
-    @Select("select a.article_id as article_id, " +
-            "       a.writer_id as writer_id, " +
-            "       u.nickname as writer_nickname, " +
-            "       a.title as title, " +
-            "       a.content as content, " +
-            "       a.created_at as created_at, " +
-            "       a.last_modified_at as last_modified_at " +
-            "from article a " +
-            "left join users u on a.writer_id = u.user_id " +
-            "where article_id = ${articleId}")
-    ArticleDetailsDto selectArticleDetails(Long articleId);
+    ArticleDetailsDto selectArticleDetails(UserAndArticleIdParam param);
 
     List<ArticleSummary> selectArticleSummaryList(ArticleListParam param);
 
@@ -48,4 +30,6 @@ public interface ArticleDao {
 
     @Delete("delete from article where article_id = #{articleId}")
     void deleteArticle(Long articleId);
+
+    List<ArticleSummary> selectArticleSummaryListByScrapUserId(Long userId);
 }

@@ -19,7 +19,8 @@ public class MybatisManager {
 
         configuration.setCacheEnabled(false);
         configuration.setUseGeneratedKeys(true);
-        configuration.setDefaultExecutorType(ExecutorType.REUSE);
+        // 기본 : SESSION <- cache가 session 동안 유지
+        configuration.setLocalCacheScope(LocalCacheScope.STATEMENT);
 
         // environment 등록
         Environment env = new Environment(

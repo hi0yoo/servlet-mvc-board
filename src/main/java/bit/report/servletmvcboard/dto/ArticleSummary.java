@@ -50,4 +50,14 @@ public class ArticleSummary {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "ArticleSummary{" +
+               "articleId=" + articleId +
+               ", userInfo=" + userInfo +
+               ", title='" + title + '\'' +
+               ", createdAt=" + createdAt +
+               '}';
+    }
 }

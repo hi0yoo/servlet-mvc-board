@@ -14,12 +14,7 @@ public class DeleteArticleController extends AbstractController {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String articleIdString = req.getParameter("articleId");
-        if (articleIdString == null || articleIdString.isEmpty()) {
-            throw new RuntimeException("파라미터 오류!");
-        }
-
-        Long articleId = Long.parseLong(articleIdString);
+        Long articleId = Long.parseLong(req.getParameter("articleId"));
 
         LoginUserInfo loginUserInfo = getLoginUserInfo(req);
         ArticleService.getInstance().deleteArticle(loginUserInfo.getUserId(), articleId);

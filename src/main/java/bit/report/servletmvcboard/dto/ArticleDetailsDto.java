@@ -11,16 +11,15 @@ public class ArticleDetailsDto {
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
 
-    public ArticleDetailsDto() {
-    }
+    private int likeCount;
+    private int unlikeCount;
 
-    public ArticleDetailsDto(Long articleId, UserInfoDto userInfo, String title, String content, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
-        this.articleId = articleId;
-        this.userInfo = userInfo;
-        this.title = title;
-        this.content = content;
-        this.createdAt = createdAt;
-        this.lastModifiedAt = lastModifiedAt;
+    private boolean liked;
+    private boolean unliked;
+
+    private boolean scraped;
+
+    public ArticleDetailsDto() {
     }
 
     public Long getArticleId() {
@@ -69,5 +68,62 @@ public class ArticleDetailsDto {
 
     public void setLastModifiedAt(LocalDateTime lastModifiedAt) {
         this.lastModifiedAt = lastModifiedAt;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public int getUnlikeCount() {
+        return unlikeCount;
+    }
+
+    public void setUnlikeCount(int unlikeCount) {
+        this.unlikeCount = unlikeCount;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
+    public boolean isUnliked() {
+        return unliked;
+    }
+
+    public void setUnliked(boolean unliked) {
+        this.unliked = unliked;
+    }
+
+    public boolean isScraped() {
+        return scraped;
+    }
+
+    public void setScraped(boolean scraped) {
+        this.scraped = scraped;
+    }
+
+    @Override
+    public String toString() {
+        return "ArticleDetailsDto{" +
+               "articleId=" + articleId +
+               ", userInfo=" + userInfo +
+               ", title='" + title + '\'' +
+               ", content='" + content + '\'' +
+               ", createdAt=" + createdAt +
+               ", lastModifiedAt=" + lastModifiedAt +
+               ", likeCount=" + likeCount +
+               ", unlikeCount=" + unlikeCount +
+               ", liked=" + liked +
+               ", unliked=" + unliked +
+               ", scraped=" + scraped +
+               '}';
     }
 }

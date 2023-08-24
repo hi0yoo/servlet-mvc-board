@@ -6,9 +6,8 @@
 <head>
     <title>게시글 리스트</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/5.2.3/css/bootstrap.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
 </head>
-<body>
+<body class="w-50" style="margin: 0 auto;">
 <div class="container row">
     <jsp:include page="${pageContext.request.contextPath}/WEB-INF/components/header.jsp"/>
     <div>

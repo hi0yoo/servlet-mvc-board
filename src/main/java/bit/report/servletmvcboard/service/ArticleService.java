@@ -1,10 +1,13 @@
 package bit.report.servletmvcboard.service;
 
 import bit.report.servletmvcboard.config.MybatisManager;
+import bit.report.servletmvcboard.dao.ArticleScrapDao;
 import bit.report.servletmvcboard.dao.model.Article;
 import bit.report.servletmvcboard.dao.ArticleDao;
+import bit.report.servletmvcboard.dao.model.ArticleScrap;
 import bit.report.servletmvcboard.dao.param.ArticleListParam;
 import bit.report.servletmvcboard.dao.param.UpdateArticleParam;
+import bit.report.servletmvcboard.dao.param.UserAndArticleIdParam;
 import bit.report.servletmvcboard.dto.ArticleDetailsDto;
 import bit.report.servletmvcboard.dto.ArticleSummary;
 import bit.report.servletmvcboard.dto.PagingDto;
@@ -16,9 +19,11 @@ public class ArticleService {
     private static final ArticleService INSTANCE = new ArticleService();
 
     private final ArticleDao articleDao;
+    private final ArticleScrapDao articleScrapDao;
 
     private ArticleService() {
         this.articleDao = MybatisManager.getMapper(ArticleDao.class);
+        this.articleScrapDao = MybatisManager.getMapper(ArticleScrapDao.class);
     }
 
     public static ArticleService getInstance() {
@@ -34,8 +39,8 @@ public class ArticleService {
         return article.getId();
     }
 
-    public ArticleDetailsDto getArticleDetails(Long articleId) {
-        ArticleDetailsDto articleDetailsDto = articleDao.selectArticleDetails(articleId);
+    public ArticleDetailsDto getArticleDetails(Long userId, Long articleId) {
+        ArticleDetailsDto articleDetailsDto = articleDao.selectArticleDetails(new UserAndArticleIdParam(userId, articleId));
 
         if (articleDetailsDto == null) {
             // TODO article not found exception
@@ -72,5 +77,18 @@ public class ArticleService {
     public void deleteArticle(Long userId, Long articleId) {
         // TODO check userId
         articleDao.deleteArticle(articleId);
+    }
+
+    public void toggleScrap(Long userId, Long articleId) {
+        // article-scrap 조회
+        ArticleScrap articleScrap = articleScrapDao.selectArticleScrap(new UserAndArticleIdParam(userId, articleId));
+        // 있으면 삭제
+        if (articleScrap != null) articleScrapDao.deleteArticleScrap(articleScrap.getId());
+        // 없으면 추가
+        else articleScrapDao.insertArticleScrap(new ArticleScrap(null, userId, articleId));
+    }
+
+    public List<ArticleSummary> getScrapedArticleList(Long userId) {
+        return articleDao.selectArticleSummaryListByScrapUserId(userId);
     }
 }

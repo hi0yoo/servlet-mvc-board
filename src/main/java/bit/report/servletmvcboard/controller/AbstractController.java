@@ -20,7 +20,6 @@ public abstract class AbstractController extends HttpServlet {
     }
 
     protected static LoginUserInfo getLoginUserInfo(HttpServletRequest request) {
-        Object o = request.getSession().getAttribute(SESSION_ATTR_NAME_LOGIN_USER);
-        return o == null ? null : (LoginUserInfo) o;
+        return (LoginUserInfo) request.getSession().getAttribute(SESSION_ATTR_NAME_LOGIN_USER);
     }
 }

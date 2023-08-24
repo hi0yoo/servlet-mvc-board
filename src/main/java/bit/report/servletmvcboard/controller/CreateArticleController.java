@@ -22,12 +22,9 @@ public class CreateArticleController extends AbstractController {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LoginUserInfo loginUserInfo = getLoginUserInfo(req);
-        if (loginUserInfo == null) {
-            // TODO 로그인 필수
-        }
-
         String title = req.getParameter("title");
         String content = req.getParameter("content");
+
         Long articleId = ArticleService.getInstance().createArticle(loginUserInfo.getUserId(), title, content);
 
         resp.sendRedirect("/article/detail?article-id=" + articleId);

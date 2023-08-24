@@ -24,19 +24,30 @@ create table article
 # 테이블 구조 변경되면 알려주세요
 create table good
 (
+    num        bigint auto_increment primary key,
     user_id    bigint not null,
     article_id bigint not null,
-    primary key (user_id, article_id),
     foreign key (user_id) references users (user_id),
     foreign key (article_id) references article (article_id)
 );
 
+
 # 역시 bac 보다 article_bad 라는 이름이 의미가 더 드러나지 싶습니다.
 create table bad
 (
+    num        bigint auto_increment primary key,
     user_id    bigint not null,
     article_id bigint not null,
-    primary key (user_id, article_id),
+    foreign key (user_id) references users (user_id),
+    foreign key (article_id) references article (article_id)
+);
+
+
+create table article_scrap
+(
+    article_scrap_id bigint auto_increment primary key,
+    user_id    bigint not null,
+    article_id bigint not null,
     foreign key (user_id) references users (user_id),
     foreign key (article_id) references article (article_id)
 );

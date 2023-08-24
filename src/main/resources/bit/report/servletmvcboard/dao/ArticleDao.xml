@@ -4,6 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bit.report.servletmvcboard.dao.ArticleDao">
 
+    <resultMap id="article-details" type="bit.report.servletmvcboard.dto.ArticleDetailsDto">
+        <id column="article_id" property="articleId"/>
+        <result column="writer_id" property="userInfo.userId"/>
+        <result column="writer_nickname" property="userInfo.nickname"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="last_modified_at" property="lastModifiedAt"/>
+        <result column="scraped" property="scraped"/>
+    </resultMap>
+
+    <select id="selectArticleDetails" resultMap="article-details" parameterType="bit.report.servletmvcboard.dao.param.UserAndArticleIdParam">
+        select a.article_id       as article_id,
+               a.writer_id        as writer_id,
+               u.nickname         as writer_nickname,
+               a.title            as title,
+               a.content          as content,
+               a.created_at       as created_at,
+               a.last_modified_at as last_modified_at,
+               if (art_sc.article_scrap_id is null, false, true) as scraped
+        from article a
+                 left join users u on a.writer_id = u.user_id
+                 left join article_scrap as art_sc on a.article_id = art_sc.article_id and art_sc.user_id = #{userId}
+        where a.article_id = #{articleId};
+    </select>
+
+
     <resultMap id="article-summary" type="bit.report.servletmvcboard.dto.ArticleSummary">
         <id column="article_id" property="articleId"/>
         <result column="writer_id" property="userInfo.userId"/>
@@ -35,5 +62,18 @@
         </if>
         order by a.created_at desc
         limit #{offset}, #{pageSize}
+    </select>
+
+    <select id="selectArticleSummaryListByScrapUserId" parameterType="Long" resultMap="article-summary">
+        select a.article_id as article_id,
+               a.writer_id  as writer_id,
+               u.nickname   as writer_nickname,
+               a.title      as title,
+               a.created_at as created_at
+        from article_scrap art_sc
+                 left join article a on art_sc.article_id = a.article_id
+                 left join users u on a.writer_id = u.user_id
+        where art_sc.user_id = #{userId}
+        order by a.created_at desc
     </select>
 </mapper>

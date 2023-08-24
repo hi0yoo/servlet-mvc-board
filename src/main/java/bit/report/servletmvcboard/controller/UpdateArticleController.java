@@ -20,7 +20,8 @@ public class UpdateArticleController extends AbstractController {
 
         // TODO 작성자 확인
         // TODO when ArticleDetails null
-        ArticleDetailsDto articleDetails = ArticleService.getInstance().getArticleDetails(articleId);
+        LoginUserInfo loginUserInfo = getLoginUserInfo(req);
+        ArticleDetailsDto articleDetails = ArticleService.getInstance().getArticleDetails(loginUserInfo.getUserId(), articleId);
         req.setAttribute("articleDetails", articleDetails);
 
         RequestDispatcher rd = req.getRequestDispatcher(resolvePath("article/update"));
@@ -30,7 +31,6 @@ public class UpdateArticleController extends AbstractController {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LoginUserInfo loginUserInfo = getLoginUserInfo(req);
-        Long userId = loginUserInfo.getUserId();
 
         // TODO 작성자 확인
 
@@ -39,7 +39,7 @@ public class UpdateArticleController extends AbstractController {
         String title = req.getParameter("title");
         String content = req.getParameter("content");
 
-        ArticleService.getInstance().updateArticle(userId, articleId, title, content);
+        ArticleService.getInstance().updateArticle(loginUserInfo.getUserId(), articleId, title, content);
 
         resp.sendRedirect("/article/detail?article-id=" + articleId);
     }

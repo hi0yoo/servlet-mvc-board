@@ -23,7 +23,7 @@
                 location.href = '${pageContext.request.contextPath}/sign-up'
             } signUpPage()">회원가입
             </button>
-            <button class="btn btn-primary" onclick="function login() {
+            <button id="btn-login" class="btn btn-primary" onclick="function login() {
             document.loginForm.submit()
         } login()">로그인
             </button>
@@ -31,4 +31,17 @@
     </div>
 </div>
 </body>
+<script>
+    const enterListener = (event) => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("btn-login").click();
+        }
+    };
+
+    document.getElementById("input-username").addEventListener("keyup", enterListener);
+    document.getElementById("input-password").addEventListener("keyup", enterListener);
+
+    document.getElementById("input-username").focus()
+</script>
 </html>
